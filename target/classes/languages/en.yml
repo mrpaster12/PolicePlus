@@ -1,0 +1,219 @@
+# English Language File
+# فایل زبان انگلیسی
+# This file contains all English messages for the Police Plugin
+# این فایل شامل تمام پیام‌های انگلیسی برای پلاگین پلیس است
+
+prefix: "&8[&cPolice&8] &r"
+
+# General messages
+no_permission: "&cYou don't have permission to use this command!"
+player_not_found: "&cPlayer not found!"
+player_already_wanted: "&cPlayer is already wanted!"
+player_not_wanted: "&cPlayer is not wanted!"
+player_jailed: "&cPlayer has been jailed!"
+player_unjailed: "&aPlayer has been released from jail!"
+compass_given: "&aCompass given to track {player}!"
+jail_location_set: "&aJail location has been set!"
+
+# Wanted messages
+wanted_added: "&c{player} is now wanted! Level: {level}"
+wanted_removed: "&a{player} is no longer wanted!"
+wanted_set: "&c{player} wanted level set to: {level}"
+wanted_self_level: "&eYour wanted level: &c{level}"
+wanted_list_header: "&6=== Wanted Players ==="
+wanted_list_empty: "&eNo players are currently wanted."
+wanted_list_entry: "&c{player} - Level: {level}"
+wanted_police_notification: "&cNew wanted player: {player} (Level: {level}) - Use /police gui to track!"
+
+# Jail messages
+jail_time_set: "&c{player} has been jailed for {time} minutes!"
+jail_time_remaining: "&cYou have {time} minutes remaining in jail!"
+jail_released: "&aYou have been released from jail!"
+jail_list_header: "&6=== Jailed Players ==="
+jail_list_empty: "&eNo players are currently jailed."
+jail_list_entry: "&c{player} - Time: {time} minutes"
+jail_created: "&aJail '{jail_name}' has been created successfully!"
+jail_deleted: "&aJail '{jail_name}' has been deleted!"
+jail_not_found: "&cJail '{jail_name}' not found!"
+jail_already_exists: "&cJail '{jail_name}' already exists!"
+jail_list_jails_header: "&6=== Available Jails ==="
+jail_list_jails_empty: "&eNo jails have been created."
+jail_list_jails_entry: "&a{jail_name} - ID: {jail_id}"
+jail_too_far: "&cPlayer is too far away! Maximum distance: {distance} blocks"
+jail_wanted_cleared: "&aYour wanted level has been cleared!"
+jail_no_jails: "&cNo jails have been created!"
+jail_spawn_set: "&aJail spawn location has been set for '{jail_name}'!"
+jail_spawn_set_all: "&aSpawn location set for {count} jails!"
+
+# Arrest messages
+player_arrested: "&c{player} has been arrested by {police}!"
+player_released_arrest: "&a{player} has been released from arrest!"
+player_already_arrested: "&cThis player is already arrested!"
+player_not_arrested: "&cThis player is not arrested!"
+not_arresting_police: "&cYou are not the police who arrested this player!"
+player_arrested_success: "&aPlayer successfully arrested! You can now jail them."
+player_jailed_success: "&aPlayer successfully jailed!"
+police_jail_usage: "&cUsage: /police jail"
+
+# Compass messages
+compass_tracking: "&aCompass is now tracking {player}"
+compass_distance: "&eDistance: {distance} blocks"
+compass_distance_with_coords: "&eDistance: {distance} blocks | &6{coords}"
+compass_no_target: "&cNo target set for compass!"
+compass_tracking_started: "&aStarted tracking {player} with compass and boss bar!"
+
+# Action bar (jail)
+jail_actionbar_remaining: "&eJail time left: &c{minutes}&7m &c{seconds}&7s"
+salary_paid: "&aSalary received: &e{amount}"
+
+# GUI messages
+gui_police_title: "&8Police Control Panel"
+gui_wanted_title: "&8Wanted Players"
+gui_jail_title: "&8Jail Management"
+gui_select_player: "&aClick to select player"
+gui_track_player: "&aClick to track player"
+gui_click_to_arrest_or_track: "&aClick: arrest if close/wanted, otherwise track"
+gui_jail_player: "&cClick to jail player"
+gui_release_player: "&aClick to release player"
+
+# GUI lore/status additions
+status_arrested: "Arrested"
+lore_wanted_level: "&7Wanted Level: &c{level}"
+lore_status_arrested_by_you: "&7Status: &6Arrested by you"
+lore_click_to_jail: "&7Click to jail this player"
+lore_distance_blocks: "&7Distance: &e{distance} blocks"
+lore_can_jail: "&a✓ Can jail"
+lore_too_far_to_jail: "&c✗ Too far to jail"
+lore_status_offline: "&7Status: &cOffline"
+lore_click_to_arrest: "&7Click to arrest this player"
+lore_right_click_to_track: "&7Right-click to track with compass"
+# Jail restriction messages
+jail_block_break_denied: "&cYou cannot break blocks while in jail!"
+jail_block_place_denied: "&cYou cannot place blocks while in jail!"
+jail_area_leave_denied: "&cYou cannot leave the jail area!"
+lore_can_arrest: "&a✓ Can arrest"
+lore_too_far_to_arrest: "&c✗ Too far to arrest"
+
+# Info panel (GUI)
+info_title_police: "&6Police Information"
+info_total_wanted_players: "&7Total Wanted Players: &c{count}"
+info_use_compass: "&7Use compass to track players"
+info_click_player_heads: "&7Click player heads to interact"
+info_max_arrest_distance: "&7Max arrest distance: &e{distance} blocks"
+info_compass_tracking: "&7Compass tracking: {status}"
+status_active: "Active"
+status_inactive: "Inactive"
+
+# Handcuff messages
+handcuff:
+  cuffed_by: "&cYou have been cuffed by {player}!"
+  uncuffed_by: "&aYou have been uncuffed by {player}!"
+  cuffed: "&aYou cuffed {player}!"
+  console: "&cThis command can only be used by players!"
+  usage:
+    cuff: "&cUsage: /cuffe <player>"
+    uncuff: "&cUsage: /uncuffe <player>"
+    give: "&cUsage: /cuffe give <player> [amount]"
+  # duplicate keys removed above; keep single set here
+  already_cuffed: "&cPlayer is already cuffed!"
+  not_cuffed: "&cPlayer is not cuffed!"
+  cannot_cuff_self: "&cYou cannot cuff yourself!"
+  cannot_uncuff_others: "&cYou can only uncuff players you cuffed!"
+  failed: "&cFailed to cuff/uncuff player!"
+  no_player_nearby: "&cNo player nearby to cuff!"
+  too_far: "&cPlayer is too far away! Maximum distance: 3 blocks"
+  too_far_from_cuffer: "&cYou are too far from the officer who cuffed you!"
+  timeout: "&aYour handcuffs have timed out and been removed!"
+  given: "&aGave {amount} handcuff(s) to {player}!"
+  received: "&aYou received {amount} handcuff(s)!"
+  inventory_full: "&cPlayer's inventory is full!"
+  invalid_amount: "&cInvalid amount! Must be between 1 and 64"
+  returned_inventory: "&aYour handcuff has been returned to your inventory!"
+  returned_dropped: "&aYour handcuff has been dropped at your location (inventory full)!"
+
+# Legacy keys compatibility (for old messages/screens)
+cuff_cuffed_notify_police: "&aYou cuffed {player}!"
+cuff_cuffed_notify_target: "&cYou have been cuffed by {police}!"
+
+# Time formats
+time_minutes: "{minutes} minutes"
+time_seconds: "{seconds} seconds"
+
+# Help messages
+help_title: "=== Police Plugin Help ==="
+help_wanted_title: "Wanted Commands"
+help_jail_title: "Jail Commands"
+help_police_title: "Police Commands"
+help_compass_title: "Compass Commands"
+help_permissions_title: "Permissions"
+
+# Wanted help messages
+wanted_help_title: "&6=== Wanted Commands ==="
+wanted_help_self: "&e/wanted &7- Check your own wanted level"
+wanted_help_set: "&e/wanted set <player> [level] &7- Set player's wanted level"
+wanted_help_create: "&e/wanted create <name> <id> &7- Create a new jail"
+wanted_help_delete: "&e/wanted delete <name> &7- Delete a jail"
+wanted_help_spawn: "&e/wanted spawn <jail_name> &7- Set jail spawn location"
+wanted_help_list: "&e/wanted list &7- List all wanted players"
+wanted_help_jail: "&e/wanted jail <player> &7- Jail a wanted player"
+wanted_help_unjail: "&e/wanted unjail <player> &7- Release a jailed player"
+wanted_help_arrest: "&e/wanted arrest <player> &7- Arrest a wanted player"
+wanted_help_reload: "&e/wanted reload &7- Reload plugin configuration"
+wanted_help_reloadlang: "&e/wanted reloadlang &7- Reload language files"
+wanted_help_refresh: "&e/wanted refresh &7- Refresh all player displays"
+wanted_help_help: "&e/wanted help &7- Show this help message"
+wanted_help_gui: "&e/wanted gui &7- Open wanted players GUI"
+
+# Usage messages
+usage_wanted: "&cUsage: /wanted <set|list|jail|unjail|reload|help|gui> [player] [level/jail_name] [time]"
+usage_wanted_set: "&cUsage: /wanted set <player> [level]"
+usage_wanted_arrest: "&cUsage: /wanted arrest <player>"
+usage_wanted_jail: "&cUsage: /wanted jail <player>"
+usage_wanted_unjail: "&cUsage: /wanted unjail <player>"
+usage_wanted_create: "&cUsage: /wanted create <name> <id>"
+usage_wanted_delete: "&cUsage: /wanted delete <name>"
+usage_wanted_spawn: "&cUsage: /wanted spawn <jail_name>"
+usage_wanted_invalid_level: "&cInvalid level number!"
+usage_wanted_player_only: "&cThis command can only be used by players!"
+usage_wanted_unknown: "&cUnknown subcommand. Use: set, list, jail, unjail, create, delete, spawn, reload, help, or gui"
+
+# Rank messages and usage
+usage_police_set: "&cUsage: /police set <player> <rank>"
+rank_invalid: "&cInvalid rank! Available ranks: NONE, POLICE, CHIEF"
+rank_set_success_sender: "&aSuccessfully set {player}'s rank to {rank}!"
+rank_set_success_target: "&aYour rank has been set to {rank} by {sender}!"
+
+# Wanted reload messages
+wanted_reload_success: "&aPlugin configuration and language files have been reloaded successfully!"
+wanted_reloadlang_success: "&aLanguage files have been reloaded successfully!"
+wanted_refresh_success: "&aAll player displays have been refreshed!"
+wanted_reload_error: "&cError occurred while reloading the plugin!"
+
+# Jail help messages
+jail_help_title: "=== Jail Commands ==="
+jail_help_jail: "&c/wanted jail jail <player>"
+jail_help_jail_desc: "&7Jail a wanted player"
+jail_help_create: "&c/wanted jail create <name> <id>"
+jail_help_create_desc: "&7Create a new jail at your current location"
+jail_help_delete: "&c/wanted jail delete <name>"
+jail_help_delete_desc: "&7Delete a jail"
+jail_help_spawn: "&c/wanted jail spawn"
+jail_help_spawn_desc: "&7Set spawn location for all jails"
+jail_help_list: "&c/wanted jail list"
+jail_help_list_desc: "&7Show list of available jails"
+jail_help_help: "&c/wanted jail help"
+jail_help_help_desc: "&7Show this help message"
+
+# Jail usage messages
+usage_wanted_jail_jail: "&cUsage: /wanted jail jail <player>"
+usage_wanted_jail_unknown: "&cUnknown jail subcommand. Use: jail, create, delete, spawn, list, or help"
+
+# Standalone Jail command usages
+usage_jail_create: "&cUsage: /jail create <name> <id>"
+usage_jail_delete: "&cUsage: /jail delete <name>"
+usage_jail_spawn: "&cUsage: /jail spawn"
+usage_jail_list: "&cUsage: /jail list"
+usage_jail_help: "&cUsage: /jail help"
+
+# Standalone Jail command errors
+jail_unknown_subcommand: "&cUnknown subcommand. Use: create, delete, spawn, list, or help"

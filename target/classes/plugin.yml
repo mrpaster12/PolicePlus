@@ -1,0 +1,90 @@
+name: Police-Plus
+version: 1.0.0
+main: com.policeplugin.PolicePlugin
+api-version: 1.17
+authors: [mrpaster]
+description: A comprehensive police and jail system for Minecraft
+# website removed
+load: POSTWORLD
+softdepend: [Vault, PlaceholderAPI, CuffEm]
+
+# Server compatibility
+# Compatible with: Spigot, Paper, Bukkit, and other 1.17+ servers
+# Tested versions: 1.17, 1.18, 1.19, 1.20, 1.21
+
+commands:
+  wanted:
+    description: Manage wanted players
+    usage: /wanted [self] | <set|list|jail|unjail|reload|help|gui> [player] [level] [time]
+    permission: policeplugin.wanted.self
+    aliases: [w]
+  jail:
+    description: Manage jails
+    usage: /jail <create|delete|spawn|list|help>
+    permission: policeplugin.wanted
+    aliases: [j]
+  police:
+    description: Police GUI and tools; job set, jail, arrest
+    usage: /police [job set <player> <rank>|jail|arrest <player>]
+    permission: policeplugin.police
+    aliases: [p]
+  compass:
+    description: Get compass to track wanted players
+    usage: /compass <player>
+    permission: policeplugin.compass
+    aliases: [c]
+  cuffe:
+    description: Handcuff a player or give handcuffs
+    usage: /cuffe <player> | /cuffe give <player> [amount]
+    permission: policeplugin.handcuff.cuff
+    aliases: [cuff]
+  uncuffe:
+    description: Remove handcuffs from a player
+    usage: /uncuffe <player>
+    permission: policeplugin.handcuff.uncuff
+    aliases: [uncuff]
+  # Handcuff commands removed; rely on external cuff plugin (e.g., CuffEm)
+
+permissions:
+  policeplugin.wanted.self:
+    description: Allows checking own wanted level with /wanted
+    default: true
+  policeplugin.wanted:
+    description: Allows managing wanted players and jail system (subcommands)
+    default: op
+  policeplugin.police:
+    description: Allows access to police GUI
+    default: op
+  policeplugin.compass:
+    description: Allows using compass to track players
+    default: op
+  policeplugin.bypass:
+    description: Bypass jail restrictions
+    default: op
+  policeplugin.admin:
+    description: Full admin access to all plugin features
+    default: op
+    children:
+      policeplugin.wanted: true
+      policeplugin.police: true
+      policeplugin.compass: true
+      policeplugin.bypass: true
+  policeplugin.rank.set:
+    description: Allows setting police ranks with /police set
+    default: op
+  policeplugin.rank.view:
+    description: Allows viewing rank-related tools
+    default: op
+  policeplugin.handcuff.cuff:
+    description: Allows cuffing players with handcuffs
+    default: op
+  policeplugin.handcuff.uncuff:
+    description: Allows uncuffing players
+    default: op
+  policeplugin.handcuff.give:
+    description: Allows giving handcuff items to players
+    default: op
+  policeplugin.handcuff.uncuff_any:
+    description: Allows uncuffing any player regardless of who cuffed them
+    default: op
+  # Handcuff permissions removed; managed by external cuff plugin
