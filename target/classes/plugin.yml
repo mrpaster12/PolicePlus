@@ -1,0 +1,151 @@
+name: PolicePlus
+version: 2.1.0
+main: com.policeplus.PolicePlus
+api-version: 1.13
+authors: [mrpaster]
+description: A comprehensive police and jail system for Minecraft
+# website removed
+load: POSTWORLD
+softdepend: [Vault, PlaceholderAPI, CuffEm]
+
+# Server compatibility
+# Compatible with: Spigot, Paper, Bukkit, and other 1.17+ servers
+# Tested versions: 1.17, 1.18, 1.19, 1.20, 1.21
+
+commands:
+  wanted:
+    description: Manage wanted players
+    usage: /wanted <set|add|list|jail|unjail|reload|help|gui> [player] [level] [time] [reason]
+    permission: policeplus.wanted
+    aliases: [w]
+  jail:
+    description: Manage jails
+    usage: /jail <create|delete|spawn|list|player|help>
+    permission: policeplus.wanted
+    aliases: [j]
+  police:
+    description: Police GUI and tools; wanted, job set, jail
+    usage: /police [wanted <args>|job set <player> <rank>|jail|reload|debugjails]
+    permission: policeplus.police
+    aliases: [p]
+  compass:
+    description: Get compass to track wanted players
+    usage: /compass <player>
+    permission: policeplus.compass
+    aliases: [c]
+  cuffe:
+    description: Handcuff a player or give handcuffs
+    usage: /cuffe <player> | /cuffe give <player> [amount]
+    permission: policeplus.handcuff.cuff
+    aliases: [cuff]
+  uncuffe:
+    description: Remove handcuffs from a player
+    usage: /uncuffe <player>
+    permission: policeplus.handcuff.uncuff
+    aliases: [uncuff]
+  rank:
+    description: Manage police ranks and permissions
+    usage: /rank <set|remove|list|info> [player] [rank]
+    permission: policeplus.rank.manage
+    aliases: [r]
+  bounty:
+    description: Manage bounties on wanted players
+    usage: /bounty <set|add|remove|list|info> [player] [amount] [reason]
+    permission: policeplus.bounty.manage
+    aliases: [b]
+  log:
+    description: Query and manage action logs
+    usage: /log <player|action|date|today|clean> [filters]
+    permission: policeplus.log.view
+    aliases: [l]
+  salary:
+    description: Manage and check salary information
+    usage: /salary <info|list|pay|enable|disable|status>
+    permission: policeplus.salary.view
+    aliases: [sal, $]
+  stats:
+    description: View player statistics and rankings
+    usage: /stats <me|player|top|arrests|bounty|efficiency>
+    permission: policeplus.stats.view
+    aliases: [stat, resume]
+  unjail:
+    description: Release a player from jail
+    usage: /unjail <player>
+    permission: policeplus.police
+  jails:
+    description: List all defined jails
+    usage: /jails
+    permission: policeplus.wanted
+    aliases: []
+  # Handcuff commands removed; rely on external cuff plugin (e.g., CuffEm)
+
+permissions:
+  policeplus.wanted:
+    description: Allows managing wanted players and jail system (subcommands)
+    default: op
+  policeplus.police:
+    description: Master permission — grants all police capabilities (GUI, cuffing, jailing, alerts, tracking)
+    default: op
+  policeplus.compass:
+    description: Allows using compass to track players
+    default: op
+  policeplus.bypass:
+    description: Bypass jail restrictions
+    default: op
+  policeplus.admin:
+    description: Full admin access to all plugin features
+    default: op
+    children:
+      policeplus.wanted: true
+      policeplus.police: true
+      policeplus.compass: true
+      policeplus.bypass: true
+  policeplus.rank.set:
+    description: Allows setting police ranks
+    default: op
+  policeplus.rank.view:
+    description: Allows viewing rank-related tools
+    default: op
+  policeplus.rank.manage:
+    description: Allows managing police ranks with /rank command
+    default: op
+  policeplus.handcuff.cuff:
+    description: Allows cuffing players with handcuffs
+    default: op
+  policeplus.handcuff.uncuff:
+    description: Allows uncuffing players
+    default: op
+  policeplus.handcuff.give:
+    description: Allows giving handcuff items to players
+    default: op
+  policeplus.handcuff.uncuff_any:
+    description: Allows uncuffing any player regardless of who cuffed them
+    default: op
+  policeplus.bounty.manage:
+    description: Allows managing bounties with /bounty command
+    default: op
+  policeplus.bounty.set:
+    description: Allows setting or updating bounties
+    default: op
+  policeplus.bounty.remove:
+    description: Allows removing bounties
+    default: op
+  policeplus.log.view:
+    description: Allows viewing logs with /log command
+    default: op
+  policeplus.log.clean:
+    description: Allows cleaning old logs
+    default: op
+  policeplus.salary.view:
+    description: Allows viewing own salary information
+    default: true
+  policeplus.salary.pay:
+    description: Allows forcing manual salary payments
+    default: op
+  policeplus.salary.admin:
+    description: Allows enabling/disabling salary system
+    default: op
+  policeplus.stats.view:
+    description: Allows viewing player statistics
+    default: true
+  # Handcuff permissions removed; managed by external cuff plugin

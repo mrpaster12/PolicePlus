@@ -1,0 +1,365 @@
+# Persian/Finglish Language File
+# فایل زبان فارسی/فینگلیش
+# This file contains all Persian messages for the Police Plugin
+# این فایل شامل تمام پیام‌های فارسی برای پلاگین پلیس است
+
+prefix: "&8[&cپلیس&8] &r"
+
+# General messages
+no_permission: "&cشما مجوز استفاده از این دستور را ندارید!"
+player_not_found: "&cبازیکن پیدا نشد!"
+player_already_wanted: "&cاین بازیکن قبلاً وانتد است!"
+player_not_wanted: "&cاین بازیکن وانتد نیست!"
+player_jailed: "&cبازیکن به زندان فرستاده شد!"
+player_unjailed: "&aبازیکن از زندان آزاد شد!"
+player_not_jailed: "&cاین بازیکن در زندان نیست!"
+compass_given: "&aقطب‌نما برای دنبال کردن {player} داده شد!"
+jail_location_set: "&aمکان زندان تنظیم شد!"
+
+# Wanted messages
+wanted_added: "&c{player} حالا وانتد است! سطح: {level}"
+wanted_removed: "&a{player} دیگر وانتد نیست!"
+wanted_set: "&c{player} وانتد شد! سطح: {level}"
+wanted_list_header: "&6=== بازیکنان وانتد ==="
+wanted_list_empty: "&eهیچ بازیکنی وانتد نیست."
+wanted_list_entry: "&c{player} - سطح: {level}"
+wanted_police_notification: "&cبازیکن وانتد جدید: {player} (سطح: {level}) - از /police gui برای دنبال کردن استفاده کنید!"
+
+# Jail messages
+jail_time_set: "&c{player} برای {time} دقیقه به زندان فرستاده شد!"
+jail_time_remaining: "&cشما {time} دقیقه در زندان باقی مانده‌اید!"
+jail_released: "&aشما از زندان آزاد شدید!"
+jail_list_header: "&6=== بازیکنان زندانی ==="
+jail_list_empty: "&eهیچ بازیکنی در زندان نیست."
+jail_list_entry: "&c{player} - زمان: {time} دقیقه"
+jail_created: "&aزندان '{jail_name}' با موفقیت ایجاد شد!"
+jail_deleted: "&aزندان '{jail_name}' حذف شد!"
+jail_not_found: "&cزندان '{jail_name}' پیدا نشد!"
+jail_already_exists: "&cزندان '{jail_name}' قبلاً وجود دارد!"
+jail_list_jails_header: "&6=== زندان‌های موجود ==="
+jail_list_jails_empty: "&eهیچ زندانی ایجاد نشده است."
+jail_list_jails_entry: "&a{jail_name} - شناسه: {jail_id}"
+jail_too_far: "&cبازیکن خیلی دور است! حداکثر فاصله: {distance} بلاک"
+jail_wanted_cleared: "&aسطح وانتد شما پاک شد!"
+jail_no_jails: "&cهیچ زندانی ایجاد نشده است!"
+jail_not_near_jail: "&cشما باید در فاصله {distance} بلاکی یک زندان باشید تا مظنون را زندانی کنید!"
+jail_spawn_not_set: "&cمکان اسپاون زندان توسط ادمین تنظیم نشده است! از دستور &e/jail spawn &cاستفاده کنید."
+jail_not_near_spawn: "&cشما باید در فاصله 10 بلاکی ورودی زندان (اسپاون) باشید تا مظنون را زندانی کنید!"
+jail_not_near_jail_cell: "&cشما باید در فاصله 10 بلاکی سلول زندان انتخاب شده (&e{jail}&c) باشید تا مظنون را اینجا زندانی کنید!"
+jail_spawn_set: "&aمکان اسپاون زندان برای '{jail_name}' تنظیم شد!"
+jail_spawn_set_all: "&aمکان اسپاون برای {count} زندان تنظیم شد!"
+jail_hub_set: "&aهاب زندان با موفقیت در مکان فعلی شما تنظیم شد."
+
+# Arrest messages
+player_arrested: "&c{player} توسط {police} دستگیر شد!"
+player_released_arrest: "&a{player} از دستگیری آزاد شد!"
+player_already_arrested: "&cاین بازیکن قبلاً دستگیر شده است!"
+player_not_arrested: "&cاین بازیکن دستگیر نشده است!"
+not_arresting_police: "&cشما پلیسی نیستید که این بازیکن را دستگیر کرده است!"
+player_arrested_success: "&aبازیکن با موفقیت دستگیر شد! حالا می‌توانید او را زندانی کنید."
+player_jailed_success: "&aبازیکن با موفقیت زندانی شد!"
+police_jail_usage: "&cاستفاده: /police jail"
+
+# Compass messages
+compass_tracking: "&aقطب‌نما حالا {player} را دنبال می‌کند"
+compass_distance: "&eفاصله: {distance} بلاک"
+compass_distance_with_coords: "&eفاصله: {distance} بلاک | &6{coords}"
+compass_no_target: "&cهیچ هدفی برای قطب‌نما تنظیم نشده!"
+compass_tracking_started: "&aشروع دنبال کردن {player} با قطب‌نما و باس بار!"
+
+# Action bar (jail)
+jail_actionbar_remaining: "&eزمان باقیمانده زندان: &c{minutes}&7د &c{seconds}&7ث"
+jail_actionbar_blocks: "⛏ &eبلاک‌های باقیمانده: &c{remaining}&7/&c{required}"
+jail_blocks_set: "&c{player} زندانی شد! &e{blocks} &cبلاک استخراج کن تا آزاد شوی!"
+salary_paid: "&aحقوق دریافت شد: &e{amount}"
+
+# GUI messages
+gui_police_title: "&8پنل کنترل پلیس"
+gui_wanted_title: "&8بازیکنان وانتد"
+gui_jail_title: "&8مدیریت زندان"
+gui_select_player: "&aکلیک کنید تا بازیکن را انتخاب کنید"
+gui_track_player: "&aکلیک کنید تا بازیکن را دنبال کنید"
+gui_click_to_arrest_or_track: "&aکلیک: دستگیری اگر نزدیک/وانتد، در غیر این صورت دنبال کردن"
+gui_jail_player: "&cکلیک کنید تا بازیکن را زندانی کنید"
+gui_release_player: "&aکلیک کنید تا بازیکن را آزاد کنید"
+
+# GUI lore/status additions
+status_arrested: "دستگیر شده"
+lore_wanted_level: "&7سطح وانتد: &c{level}"
+lore_wanted_reason: "&7دلیل: &f{reason}"
+lore_status_arrested_by_you: "&7وضعیت: &6توسط شما دستگیر شده"
+lore_click_to_jail: "&7برای زندانی کردن بازیکن کلیک کنید"
+lore_distance_blocks: "&7فاصله: &e{distance} بلاک"
+lore_can_jail: "&a✓ قابل زندانی کردن"
+lore_too_far_to_jail: "&c✗ فاصله برای زندان زیاد است"
+lore_status_offline: "&7وضعیت: &cآفلاین"
+lore_click_to_arrest: "&7برای دستگیری بازیکن کلیک کنید"
+lore_right_click_to_track: "&7برای دنبال کردن با قطب‌نما راست‌کلیک کنید"
+# Jail restriction messages
+jail_block_break_denied: "&cدر زندان اجازه شکستن بلاک ندارید!"
+jail_mine_protected: "&cاین یک معدن زندان است! شما اجازه تخریب آن را ندارید."
+jail_block_place_denied: "&cدر زندان اجازه گذاشتن بلاک ندارید!"
+jail_area_leave_denied: "&cاجازه خروج از محدوده زندان را ندارید!"
+lore_can_arrest: "&a✓ قابل دستگیری"
+lore_too_far_to_arrest: "&c✗ فاصله برای دستگیری زیاد است"
+
+# Info panel (GUI)
+info_title_police: "&6اطلاعات پلیس"
+info_total_wanted_players: "&7تعداد بازیکنان وانتد: &c{count}"
+info_use_compass: "&7برای دنبال کردن از قطب‌نما استفاده کنید"
+info_click_player_heads: "&7برای تعامل روی سر بازیکنان کلیک کنید"
+info_max_arrest_distance: "&7حداکثر فاصله دستگیری: &e{distance} بلاک"
+info_compass_tracking: "&7دنبال کردن قطب‌نما: {status}"
+status_active: "فعال"
+status_inactive: "غیرفعال"
+
+# Handcuff messages
+handcuff:
+  cuffed_by: "&cشما توسط {player} دستبند شدید!"
+  uncuffed_by: "&aشما توسط {player} از دستبند آزاد شدید!"
+  uncuffed: "&a{player} از دستبند آزاد شد!"
+  cuffed: "&aشما {player} را دستبند زدید!"
+  console: "&cاین دستور فقط توسط بازیکنان قابل استفاده است!"
+  usage:
+    cuff: "&cاستفاده: /cuffe <player>"
+    uncuff: "&cاستفاده: /uncuffe <player>"
+    give: "&cاستفاده: /cuffe give <player> [amount]"
+  # duplicate keys removed above; keep single set here
+  already_cuffed: "&cبازیکن قبلاً دستبند است!"
+  not_cuffed: "&cبازیکن دستبند نیست!"
+  cannot_cuff_self: "&cشما نمی‌توانید خودتان را دستبند بزنید!"
+  cannot_uncuff_others: "&cشما فقط می‌توانید بازیکنانی که دستبند زدید را آزاد کنید!"
+  failed: "&cدستبند زدن/باز کردن بازیکن ناموفق بود!"
+  no_player_nearby: "&cهیچ بازیکنی در نزدیکی برای دستبند زدن وجود ندارد!"
+  too_far: "&cبازیکن خیلی دور است! حداکثر فاصله: 3 بلاک"
+  target_not_wanted: "&cشما نمی‌توانید شهروندان بی‌گناه را دستبند بزنید! هدف باید سطح وانتد داشته باشد."
+  too_far_from_cuffer: "&cشما خیلی از افسری که شما را دستبند زده دور هستید!"
+  timeout: "&aدستبند شما منقضی شده و برداشته شد!"
+  given: "&a{amount} دستبند به {player} داده شد!"
+  received: "&aشما {amount} دستبند دریافت کردید!"
+  inventory_full: "&cانبار بازیکن پر است!"
+  invalid_amount: "&cمقدار نامعتبر! باید بین 1 تا 64 باشد"
+  returned_inventory: "&aدستبند شما به انبارتان برگشت!"
+  returned_dropped: "&aدستبند شما در مکانتان انداخته شد (انبار پر بود)!"
+  released_cop_died: "&aافسری که شما را دستبند زده بود کشته شد! شما آزاد شدید!"
+
+# Legacy keys compatibility
+cuff_cuffed_notify_police: "&aشما {player} را دستبند زدید!"
+cuff_cuffed_notify_target: "&cشما توسط {police} دستبند شدید!"
+
+# Time formats
+time_minutes: "{minutes} دقیقه"
+time_seconds: "{seconds} ثانیه"
+
+# Help messages
+help_title: "=== راهنمای پلاگین پلیس ==="
+help_wanted_title: "دستورات وانتد"
+help_jail_title: "دستورات زندان"
+help_police_title: "دستورات پلیس"
+help_compass_title: "دستورات قطب‌نما"
+help_permissions_title: "مجوزها"
+
+# Wanted help messages
+wanted_help_title: "&6=== دستورات وانتد ==="
+wanted_help_set: "&e/wanted set <player> [level] &7- تنظیم سطح وانتد بازیکن"
+wanted_help_add: "&e/wanted add <player> <level> [reason] &7- افزودن سطح وانتد با دلیل"
+wanted_help_create: "&e/wanted create <name> <id> &7- ایجاد زندان جدید"
+wanted_help_delete: "&e/wanted delete <name> &7- حذف زندان"
+wanted_help_spawn: "&e/wanted spawn <jail_name> &7- تنظیم مکان اسپاون زندان"
+wanted_help_list: "&e/wanted list &7- لیست همه بازیکنان وانتد"
+wanted_help_jail: "&e/wanted jail <player> &7- زندانی کردن بازیکن وانتد"
+wanted_help_unjail: "&e/wanted unjail <player> &7- آزاد کردن بازیکن زندانی"
+wanted_help_reload: "&e/wanted reload &7- ریلود تنظیمات پلاگین"
+wanted_help_reloadlang: "&e/wanted reloadlang &7- ریلود فایل‌های زبان"
+wanted_help_refresh: "&e/wanted refresh &7- به‌روزرسانی همه نمایش‌های بازیکنان"
+wanted_help_help: "&e/wanted help &7- نمایش این راهنما"
+wanted_help_gui: "&e/wanted gui &7- باز کردن رابط کاربری بازیکنان وانتد"
+
+# Usage messages
+usage_wanted: "&cاستفاده: /wanted <set|add|list|jail|unjail|reload|help|gui> [player] [level/jail_name] [time]"
+usage_wanted_set: "&cاستفاده: /wanted set <player> [level]"
+usage_wanted_add: "&cاستفاده: /wanted add <player> <level> [reason...]"
+wanted_add_success: "&aسطح وانتد &c{level} &aبه &c{player} &aاضافه شد!"
+usage_wanted_jail: "&cاستفاده: /wanted jail <player>"
+usage_wanted_unjail: "&cاستفاده: /wanted unjail <player>"
+usage_wanted_create: "&cاستفاده: /wanted create <name> <id>"
+usage_wanted_delete: "&cاستفاده: /wanted delete <name>"
+usage_wanted_spawn: "&cاستفاده: /wanted spawn <jail_name>"
+usage_wanted_invalid_level: "&cعدد سطح نامعتبر است!"
+usage_wanted_player_only: "&cاین دستور فقط توسط بازیکنان قابل استفاده است!"
+usage_wanted_unknown: "&cزیردستور ناشناخته. استفاده کنید: set, list, jail, unjail, create, delete, spawn, reload, help, یا gui"
+
+# Rank messages and usage
+usage_police_set: "&cاستفاده: /police set <player> <rank>"
+rank_invalid: "&cرتبه نامعتبر! رتبه‌های موجود: NONE, POLICE, CHIEF"
+rank_set_success_sender: "&aرتبه {player} با موفقیت به {rank} تغییر یافت!"
+rank_set_success_target: "&aرتبه شما توسط {sender} به {rank} تغییر یافت!"
+
+# Wanted reload messages
+wanted_reload_success: "&aتنظیمات پلاگین و فایل‌های زبان با موفقیت ریلود شدند!"
+wanted_reloadlang_success: "&aفایل‌های زبان با موفقیت ریلود شدند!"
+wanted_refresh_success: "&aهمه نمایش‌های بازیکنان به‌روزرسانی شدند!"
+wanted_reload_error: "&cخطا در ریلود کردن پلاگین!"
+
+# Jail help messages
+jail_help_title: "=== دستورات زندان ==="
+jail_help_jail: "&c/wanted jail jail <player>"
+jail_help_jail_desc: "&7زندانی کردن بازیکن وانتد"
+jail_help_create: "&c/wanted jail create <name> <id>"
+jail_help_create_desc: "&7ایجاد زندان جدید در مکان فعلی شما"
+
+# Rank System Messages
+rank_list_header: "&6=== رتبه‌های پلیس موجود ==="
+rank_list_empty: "&eرتبه‌ای تعریف‌شده نیست."
+rank_list_entry: "&a{rank_name} &7(ترتیب: {order})"
+rank_set_success: "&aرتبه {target} با موفقیت به {rank} تغییر یافت!"
+rank_removed: "&aرتبه {target} حذف‌شده است!"
+rank_not_found: "&cرتبه '{rank}' پیدا نشد!"
+rank_invalid: "&cنام رتبه نامعتبر است!"
+rank_player_info: "&eرتبه فعلی {player}: &6{rank}"
+rank_self_no_rank: "&eشما فعلاً رتبه‌ای ندارید."
+rank_broadcast_promoted: "&6{player} به رتبه &b{rank}&6 ارتقا یافت!"
+rank_broadcast_demoted: "&6{player} به رتبه &b{rank}&6 تنزل یافت!"
+rank_broadcast_removed: "&6رتبه {player} حذف‌شده است!"
+rank_error_player_offline: "&cبازیکن باید آنلاین باشد!"
+
+# Bounty System Messages
+bounty_set_success: "&aمامورت &e${amount} &aبر روی &c{player} &aتنظیم‌شد برای: &7{reason}"
+bounty_added_success: "&a&e${amount} &aبه مامورت روی &c{player}&a اضافه‌شد. کل جدید: &e${total}"
+bounty_removed_success: "&aمامورت روی &c{player}&a حذف‌شد!"
+bounty_list_header: "&6=== مامورت‌های فعال ==="
+bounty_list_empty: "&eمامورتی فعال نیست."
+bounty_list_entry: "&c{player} &7- &e${amount} &7| دلیل: &f{reason}"
+bounty_info_header: "&6=== اطلاعات مامورت ==="
+bounty_info_none: "&eمامورتی برای این بازیکن وجود ندارد."
+bounty_info_amount: "&eمیزان: &6${amount}"
+bounty_info_reason: "&eدلیل: &f{reason}"
+bounty_info_issuer: "&eصادرکننده: &6{issuer}"
+bounty_invalid_amount: "&cمیزان نامعتبر! باید بین &e{min} &cو &e{max} باشد"
+bounty_player_not_found: "&cبازیکن پیدا نشد!"
+bounty_broadcast_set: "&c{issuer} &7مامورت &e${amount} &7را برای &c{player}&7 تنظیم‌کرد!"
+bounty_broadcast_removed: "&7مامورت بر روی &c{player} &7حذف‌شده است!"
+bounty_too_high: "&cمیزان مامورت از حداکثر مجاز بیش‌تر است: &e${max}"
+
+# Log System Messages
+log_player_header: "&6=== لاگ‌های {player} ==="
+log_player_empty: "&eلاگی برای این بازیکن پیدا نشد."
+log_action_header: "&6=== لاگ‌های عملیات: {action} ==="
+log_action_empty: "&eلاگی برای این عملیات پیدا نشد."
+log_date_header: "&6=== لاگ‌های {date} ==="
+log_date_empty: "&eلاگی برای این بازه تاریخی پیدا نشد."
+log_today_header: "&6=== لاگ‌های امروز ==="
+log_today_empty: "&eلاگی برای امروز ثبت نشده است."
+log_entry: "&8[&f{time}&8] &7{action} &8→ &6{actor} &7بر روی &c{target} &7({reason})"
+log_cleaned: "&aحذف‌شد &e{count} &aورودی لاگ قدیمی‌تر از &e{days} &aروز!"
+log_no_logs: "&eلاگی برای پاک‌کردن نیست."
+log_page_info: "&7صفحه &e{page}&7/&e{max}"
+log_invalid_date: "&cفرمت تاریخ نامعتبر است! استفاده کنید: YYYY-MM-DD"
+log_clean_days_invalid: "&cروزها باید عدد مثبت باشند!"
+
+# Command Usage Messages
+cmd_rank_usage: "&cاستفاده: /rank <set|remove|list|info> [player] [rank]"
+cmd_rank_set_usage: "&cاستفاده: /rank set <player> <rank>"
+cmd_rank_remove_usage: "&cاستفاده: /rank remove <player>"
+cmd_rank_info_usage: "&cاستفاده: /rank info [player]"
+cmd_bounty_usage: "&cاستفاده: /bounty <set|add|remove|list|info> [player] [amount] [reason]"
+cmd_bounty_set_usage: "&cاستفاده: /bounty set <player> <amount> [reason]"
+cmd_bounty_add_usage: "&cاستفاده: /bounty add <player> <amount> [reason]"
+cmd_bounty_remove_usage: "&cاستفاده: /bounty remove <player>"
+cmd_bounty_info_usage: "&cاستفاده: /bounty info [player]"
+cmd_log_usage: "&cاستفاده: /log <player|action|date|today|clean> [filters]"
+cmd_log_player_usage: "&cاستفاده: /log player <player> [page]"
+cmd_log_action_usage: "&cاستفاده: /log action <action> [page]"
+cmd_log_date_usage: "&cاستفاده: /log date <YYYY-MM-DD> [end_date] [page]"
+cmd_log_clean_usage: "&cاستفاده: /log clean <days>"
+jail_help_delete: "&c/wanted jail delete <name>"
+jail_help_delete_desc: "&7حذف زندان"
+jail_help_spawn: "&c/wanted jail spawn"
+jail_help_spawn_desc: "&7تنظیم مکان اسپاون برای تمام زندان‌ها"
+jail_help_list: "&c/wanted jail list"
+jail_help_list_desc: "&7نمایش لیست زندان‌های موجود"
+jail_help_help: "&c/wanted jail help"
+jail_help_help_desc: "&7نمایش این راهنما"
+
+# Jail usage messages
+usage_wanted_jail_jail: "&cاستفاده: /wanted jail jail <player>"
+usage_wanted_jail_unknown: "&cزیردستور زندان ناشناخته. استفاده کنید: jail, create, delete, spawn, list, یا help"
+
+# Standalone Jail command usages
+usage_jail_create: "&cاستفاده: /jail create <name> <id>"
+usage_jail_delete: "&cاستفاده: /jail delete <name>"
+usage_jail_spawn: "&cاستفاده: /jail spawn"
+usage_jail_list: "&cاستفاده: /jail list"
+usage_jail_help: "&cاستفاده: /jail help"
+usage_jail_player: "&cاستفاده: /jail player <player> <jail_name>"
+
+# سیستم حقوق
+salary_info_header: "&6=== اطلاعات حقوق شما ==="
+salary_no_rank: "&cرتبه‌ای برای شما تعیین نشده است!"
+salary_amount: "حقوق"
+salary_next_payment: "پرداخت بعدی"
+salary_list_header: "&6=== سطوح حقوق پلیس ==="
+salary_list_empty: "&eسطح حقوقی تعریف‌نشده است."
+salary_list_entry: "{rank} - {salary} برای هر پرداخت"
+salary_received: "&aشما &e{amount} &aحقوق برای رتبه &6{rank}&a دریافت کردید!"
+salary_paid_success: "&aموفقاً &e{amount} &aبه &6{player}&a پرداخت‌شد!"
+salary_already_enabled: "&cسیستم حقوق قبلاً فعال است!"
+salary_already_disabled: "&cسیستم حقوق قبلاً غیرفعال است!"
+salary_enabled: "&aسیستم حقوق &aفعال‌شد&a!"
+salary_disabled: "&aسیستم حقوق &cغیرفعال‌شد&a!"
+salary_zero: "&cرتبه این بازیکن حقوق تعریف‌شده‌ای ندارد!"
+player_only: "&cاین دستور فقط توسط بازیکنان قابل استفاده است!"
+rank: "رتبه"
+
+# استفاده دستور حقوق
+cmd_salary_usage: "&cاستفاده: /salary <info|list|pay|enable|disable|status>"
+cmd_salary_pay_usage: "&cاستفاده: /salary pay <player>"
+
+# Help menu descriptions (used in clickable /wanted help)
+help_desc_set: "تنظیم سطح وانتد بازیکن"
+help_desc_add: "افزودن سطح وانتد با دلیل"
+help_desc_list: "لیست بازیکنان وانتد"
+help_desc_jail: "زندانی کردن مظنون وانتد"
+help_desc_unjail: "آزاد کردن بازیکن از زندان"
+help_desc_gui: "باز کردن رابط کاربری پلیس"
+help_desc_cuff: "دستبند زدن به بازیکن"
+help_desc_uncuff: "باز کردن دستبند از بازیکن"
+help_desc_jail_create: "ایجاد مکان زندان جدید"
+help_desc_compass: "ردیابی بازیکن وانتد"
+help_desc_rank: "مدیریت رتبه‌های پلیس"
+help_desc_bounty: "مدیریت مامورت‌ها"
+help_desc_reload: "بارگذاری مجدد تنظیمات پلاگین"
+
+# Economy reward messages
+economy_reward: "&aشما &e${amount} &aبابت زندانی کردن &c{player} &a(سطح وانتد {level}) پاداش گرفتید."
+jail_pickaxe_returned: "&aشما ریسپاون شدید. کلنگ زندان شما بازگردانده شد."
+
+# Jail escape/localization messages
+jail_cannot_escape_title: "&c&lاجازه خروج ندارید!"
+jail_cannot_escape_subtitle: "&7به سلول خود بازگردید!"
+jail_cannot_drop: "&cشما نمی‌توانید آیتم‌ها را در زندان رها کنید!"
+jail_custom_duration_prompt: "&eمدت زمان سفارشی را به دقیقه در چت وارد کنید (یا 'cancel' برای خروج):"
+jail_custom_duration_positive: "&cلطفاً یک عدد مثبت وارد کنید!"
+jail_custom_duration_invalid: "&cعدد نامعتبر! لطفاً یک عدد معتبر (به دقیقه) وارد کنید یا 'cancel'."
+jail_cancelled: "&cفرآیند زندانی کردن لغو شد."
+jail_mine_created: "&aزندان ماینینگ '{jail_name}' ایجاد شد! از §e/jail setpos1 {jail_name} §aو §e/jail setpos2 {jail_name} §ابرای تنظیم منطقه استخراج استفاده کنید."
+jail_position_set: "&aموقعیت {pos} برای زندان ماینینگ '{jail_name}' تنظیم شد در §e{coords}"
+jail_mining_filled: "&aمنطقه استخراج با COBBLESTONE پر شد. زندان ماینینگ آماده است!"
+jail_must_look_block: "&cشما باید به یک بلاک نگاه کنید!"
+jail_time_jail_not_allowed: "&cاین زندان یک زندان زمانی عادی است. نمی‌توانید موقعیت‌های استخراج برای آن تنظیم کنید!"
+
+# Beautified cop alert notifications
+alerts:
+  wanted_added: |-
+    &8&m---------------------------------------------
+    &f[&c🚔 هشدار&f] &c&l{player} &7تحت تعقیب قرار گرفت!
+    &f[&c🚔 هشدار&f] &7سطح تعقیب: &e{level} &7| دلیل: &c{reason}
+    &f[&c🚔 هشدار&f] &7جهت ردیابی و اقدام سریع از دستور &a/police &7استفاده کنید.
+    &8&m---------------------------------------------
+
+# Jail release notifications (sent to cops and released player only)
+jail_release_cop_notify: "&f[&cپلیس&f] &aبازیکن &e{player} &aاز زندان آزاد شد."
+jail_release_player_notify: "&e[پلیس] &aشما از زندان آزاد شدید! قوانین را رعایت کنید."
+
+# Standalone Jail command errors
+jail_unknown_subcommand: "&cزیردستور ناشناخته. از create, delete, spawn, list یا help استفاده کنید"

@@ -1,0 +1,105 @@
+# PolicePlus Configuration
+# تنظیمات پلاگین پلیس‌پلاس
+# Notes:
+# - Values are hot-reloadable via /police reload.
+# - Time units: ticks = 1/20 second. 20 ticks ≈ 1 second.
+# نکات:
+# - مقادیر با دستور /police reload داغ‌بارگذاری (ریلود) می‌شوند.
+# - واحد زمان: هر tick معادل 1/20 ثانیه است. 20 تیک ≈ 1 ثانیه.
+
+# Language settings / تنظیمات زبان
+# Choose the language file from resources/languages (without .yml extension)
+# زبان فایل را از مسیر resources/languages انتخاب کنید (بدون پسوند .yml)
+language: "en" # en = English, fa = Persian / en = انگلیسی، fa = فارسی
+
+# Wanted system settings / تنظیمات سیستم وانتد
+# Controls how wanted levels are assigned and their limits
+# تنظیم می‌کند سطح‌های وانتد چگونه اعمال شوند و حد بالای آن‌ها
+wanted:
+  max_wanted_level: 5 # Maximum wanted level / حداکثر سطح وانتد
+  wanted_on_kill: true # Add wanted on player kills / اضافه کردن وانتد با کشتن بازیکن
+  wanted_level_per_kill: 1 # Amount added per kill / میزان اضافه‌شده برای هر کشتن
+  # Auto-decay: automatically decrease wanted level over time for online players
+  # کاهش خودکار: کاهش سطح وانتد به مرور زمان برای بازیکنان آنلاین
+  auto_remove: true # Enable auto-decay / فعال‌سازی کاهش خودکار
+  remove_interval_minutes: 30 # Interval in minutes / فاصله زمانی بر حسب دقیقه
+  # Reset wanted level on player death / ریست شدن وانتد هنگام مرگ
+  reset_on_death:
+    enabled: false # Reset wanted level on player death / ریست شدن وانتد هنگام مرگ
+    max_level_to_reset: 3 # Reset only if wanted is <= this value / فقط در صورتی ریست می‌شود که وانتد بازیکن کمتر یا مساوی این مقدار باشد
+
+# Jail system settings / تنظیمات سیستم زندان
+# Determines jail durations, mining labor, and arrest rules
+# مدت‌زمان زندان، کار اجباری و قوانین دستگیری را تعیین می‌کند
+jail:
+  # Jail type: "TIME" (time-based) or "BLOCKS" (labor/mine-based)
+  # نوع زندان: "TIME" (بر اساس زمان) یا "BLOCKS" (بر اساس کار اجباری/استخراج سنگ)
+  type: "TIME"
+  jail_time_per_wanted: 5 # Minutes per wanted level (used when type=TIME) / دقیقه برای هر سطح وانتد (استفاده در نوع TIME)
+  max_jail_time: 60 # Max jail time (minutes) / حداکثر زمان زندان (دقیقه)
+  blocks_per_wanted: 100 # Blocks to mine per wanted level (used when type=BLOCKS) / بلاک برای استخراج به ازای هر سطح وانتد (استفاده در نوع BLOCKS)
+  allowed_blocks: # Blocks that count towards labor inside cuboid region / بلاک‌هایی که برای کار در منطقه ۳ بعدی معدن محاسبه می‌شوند
+    - "COBBLESTONE"
+    - "STONE"
+  arrest_distance: 10 # Max distance to arrest (blocks) / حداکثر فاصله مجاز برای دستگیری (بلاک)
+  jail_required_distance: 7 # Max distance from selected jail to imprison suspect / حداکثر فاصله مجاز از سلول انتخابی برای زندانی کردن
+  clear_wanted_on_release: true # Clear wanted on release / پاک شدن وانتد بعد از آزادی
+  default_jail_radius: 10 # Restricted radius around the jail cell (anti-escape) / شعاع محدودیت اطراف سلول زندان (ضد فرار)
+
+# Compass settings / تنظیمات ردیاب قطب‌نما
+compass:
+  update_interval: 20 # Ticks between updates / فاصله به‌روزرسانی بر حسب تیک
+  max_distance: 10000 # Max shown distance / حداکثر فاصله نمایش ردیابی
+
+# Handcuff settings / تنظیمات دستبند
+handcuff:
+  name: "cuff" # Display name for handcuff item / نام نمایشی آیتم دستبند
+  lore: "cuff" # Lore text for handcuff item / متن لور آیتم دستبند
+  name_color: "&a" # Color code for item name / کد رنگ نام آیتم دستبند
+  name_bold: true # Bold name (true/false) / بولد کردن نام آیتم دستبند
+  max_time: 300 # Maximum cuff time in seconds / حداکثر مدت دستبند به ثانیه قبل از باز شدن خودکار
+  accept_plain_item: false # If true, regular Blaze Rods work as cuffs / اگر true باشد، بلیز رادهای معمولی هم پذیرفته می‌شوند
+  apply_blindness: false # Apply BLINDNESS effect to suspect while handcuffed / اعمال اثر کوری به متهم هنگام دستبند
+
+# Display settings / تنظیمات نمایش
+display:
+  enabled: true
+  mode: "stars" # stars | number / ستاره‌ای | عددی
+  stars:
+    symbol: "★" # Display symbol / نماد نمایش وانتد
+    filled_color: "&6" # Color of filled stars / رنگ ستاره پر
+    empty_color: "&7" # Color of empty stars / رنگ ستاره خالی
+  tablist:
+    enabled: true
+    format_stars: " &7[&e{stars}&7]" # Tablist format with stars / فرمت تب‌لیست با ستاره‌ها
+    format_number: " &7[&e{level}&7]" # Tablist format with numbers / فرمت تب‌لیست با عدد لول
+  below_name:
+    enabled: true
+    objective: "wantedLevel" # Scoreboard objective name / نام آبجکتیو در اسکوربورد
+    title: "&eWanted" # Objective display title / عنوان نمایش بالای سر بازیکن
+
+# Bounty System / سیستم جایزه روی سر متهم
+# Configure player-set bounties
+# تنظیمات سیستم جوایز متهمان
+bounty:
+  enabled: true
+  max_bounty: 10000 # Maximum bounty amount / حداکثر میزان جایزه
+  min_bounty: 10 # Minimum bounty amount / حداقل میزان جایزه
+  remove_on_jail: true # Remove bounty when player is jailed / حذف شدن جایزه متهم پس از زندانی شدن
+  currency_symbol: "$" # Currency display / نماد پول
+
+# Economy rewards for jailing suspects / پاداش‌های اقتصادی برای پلیس‌ها
+# Automatically hooks into Vault and EssentialsX Economy
+# به طور خودکار به سیستم اقتصاد و بانکداری متصل می‌شود
+economy:
+  enabled: true # Enable Vault cash rewards on successful arrests / فعال‌سازی پاداش‌های مالی در لحظه جیل متهم
+  reward_per_wanted_level: 150.0 # Money given to cop per wanted level of jailed player / پول پرداختی به پلیس به ازای هر لول وانتد متهم
+
+# Log System / سیستم ثبت تاریخچه و گزارشات
+# Configure logging settings
+# تنظیمات سیستم لاگ و گزارش عملکرد پلیس‌ها
+logs:
+  enabled: true
+  save_on_shutdown: true # Save logs on server shutdown / ذخیره گزارشات هنگام خاموشی سرور
+  rotation_days: 30 # Days before log rotation / روزهای پیش از بایگانی و چرخش لاگ‌ها
+  max_log_entries_per_day: 10000 # Max entries per day / حداکثر خطوط گزارش روزانه
