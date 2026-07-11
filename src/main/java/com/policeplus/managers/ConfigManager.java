@@ -120,6 +120,7 @@ public class ConfigManager {
         changed |= ensureDefault("handcuff.lore", "cuff");
         changed |= ensureDefault("handcuff.name_color", "&a");
         changed |= ensureDefault("handcuff.name_bold", true);
+        changed |= ensureDefault("handcuff.lore_color", "&7");
         changed |= ensureDefault("handcuff.max_time", 300);
         changed |= ensureDefault("handcuff.accept_plain_item", false);
         changed |= ensureDefault("handcuff.apply_blindness", false);
@@ -328,6 +329,10 @@ public class ConfigManager {
         return config.getBoolean("handcuff.name_bold", true);
     }
 
+    public String getHandcuffLoreColor() {
+        return config.getString("handcuff.lore_color", "&7");
+    }
+
     public int getHandcuffMaxTime() {
         return cacheInitialized ? cachedHandcuffMaxTime : config.getInt("handcuff.max_time", 300);
     }
@@ -392,6 +397,27 @@ public class ConfigManager {
 
     public double getEconomyRewardPerWantedLevel() {
         return config.getDouble("economy.reward_per_wanted_level", 150.0);
+    }
+
+    // Bounty settings
+    public boolean isBountyEnabled() {
+        return config.getBoolean("bounty.enabled", true);
+    }
+
+    public double getBountyMax() {
+        return config.getDouble("bounty.max_bounty", 10000);
+    }
+
+    public double getBountyMin() {
+        return config.getDouble("bounty.min_bounty", 10);
+    }
+
+    public boolean isBountyRemoveOnJail() {
+        return config.getBoolean("bounty.remove_on_jail", true);
+    }
+
+    public String getBountyCurrencySymbol() {
+        return config.getString("bounty.currency_symbol", "$");
     }
 
     // Debug and validation

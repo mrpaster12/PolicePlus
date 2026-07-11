@@ -930,25 +930,71 @@ public class JailManager {
 
     /**
      * Reloads jail data from disk. Called during /police reload.
+     *
+     * SAFETY GUARANTEES:
+     * - Active jailed players are NEVER cleared — they persist in memory.
+     * - NO player is teleported during this method.
+     * - NO unjailing/release logic is triggered.
+     * - Only jail definitions (locations, types, spawns) are refreshed from disk.
+     * - The global spawn location is reloaded but NEVER used to teleport anyone.
      */
     public void reloadJails() {
-        // Save current state first
+        // Save current state first (preserves jailedPlayers to disk)
         saveData();
-        // Clear in-memory data
+        // Clear only jail definitions and spawn — NOT jailed players
         jails.clear();
-        jailedPlayers.clear();
         globalSpawn = null;
         // Reload from file
         if (dataFile.exists()) {
             // Force re-read the YAML file
             org.bukkit.configuration.file.YamlConfiguration freshConfig = YamlConfiguration.loadConfiguration(dataFile);
-            // Temporarily replace dataConfig content
-            loadDataFromConfig(freshConfig);
+            // Load jail definitions and global spawn from fresh config
+            loadJailDefinitionsFromConfig(freshConfig);
         }
     }
 
     /**
-     * Loads data from a specific FileConfiguration (used by reloadJails).
+     * Loads only jail definitions and global spawn from a config (used by reloadJails).
+     * Does NOT reload jailed players — they are preserved in memory.
+     */
+    private void loadJailDefinitionsFromConfig(FileConfiguration config) {
+        if (config.contains("jails")) {
+            for (String jailName : config.getConfigurationSection("jails").getKeys(false)) {
+                String id = config.getString("jails." + jailName + ".id");
+                Location location = loadLocationFromConfig(config, "jails." + jailName + ".location");
+                Location spawnLocation = loadLocationFromConfig(config, "jails." + jailName + ".spawn");
+                int radius = config.getInt("jails." + jailName + ".radius", 10);
+
+                String type = config.getString("jails." + jailName + ".type");
+                if (type == null) {
+                    boolean mine = config.getBoolean("jails." + jailName + ".mine", false);
+                    type = mine ? "BLOCKS" : "TIME";
+                }
+                Location pos1 = loadLocationFromConfig(config, "jails." + jailName + ".pos1");
+                Location pos2 = loadLocationFromConfig(config, "jails." + jailName + ".pos2");
+
+                if (location != null) {
+                    JailInfo jailInfo = new JailInfo(jailName, id, location);
+                    jailInfo.setSpawnLocation(spawnLocation);
+                    jailInfo.setRadius(radius);
+                    jailInfo.setType(type);
+                    jailInfo.setPos1(pos1);
+                    jailInfo.setPos2(pos2);
+                    jails.put(jailName, jailInfo);
+                }
+            }
+        }
+
+        if (config.contains("global_spawn")) {
+            globalSpawn = loadLocationFromConfig(config, "global_spawn");
+        } else if (config.contains("jail_hub")) {
+            globalSpawn = loadLocationFromConfig(config, "jail_hub");
+        }
+        // NOTE: jailedPlayers intentionally NOT reloaded — preserved in memory
+    }
+
+    /**
+     * Loads all data from a specific FileConfiguration (used by initial load).
      */
     private void loadDataFromConfig(FileConfiguration config) {
         if (config.contains("jails")) {

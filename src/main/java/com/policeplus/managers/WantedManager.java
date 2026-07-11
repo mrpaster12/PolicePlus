@@ -48,12 +48,17 @@ public class WantedManager {
         }
         markDirtyAndScheduleSave();
 
+        // Notify all online police about the new wanted player with beautiful multi-line alert
+        notifyPoliceAboutWantedPlayer(player);
+
+        // Send plain single-line notification to non-cops
         String message = plugin.getLanguageManager().getMessage("wanted_added",
                 "player", player.getName(), "level", String.valueOf(newLevel));
-        plugin.getServer().broadcastMessage(plugin.getLanguageManager().getPrefix() + message);
-
-        // Notify all online police about the new wanted player
-        notifyPoliceAboutWantedPlayer(player);
+        for (Player onlinePlayer : plugin.getServer().getOnlinePlayers()) {
+            if (!PolicePlus.isCop(onlinePlayer) && !onlinePlayer.equals(player)) {
+                onlinePlayer.sendMessage(plugin.getLanguageManager().getPrefix() + message);
+            }
+        }
 
         // Update visual displays
         plugin.getDisplayManager().updatePlayerDisplay(player);
@@ -70,9 +75,17 @@ public class WantedManager {
         }
         markDirtyAndScheduleSave();
 
+        // Notify cops with beautiful multi-line alert
+        notifyPoliceAboutWantedPlayer(player);
+
+        // Send plain notification to non-cops
         String message = plugin.getLanguageManager().getMessage("wanted_set",
                 "player", player.getName(), "level", String.valueOf(finalLevel));
-        plugin.getServer().broadcastMessage(plugin.getLanguageManager().getPrefix() + message);
+        for (Player onlinePlayer : plugin.getServer().getOnlinePlayers()) {
+            if (!PolicePlus.isCop(onlinePlayer) && !onlinePlayer.equals(player)) {
+                onlinePlayer.sendMessage(plugin.getLanguageManager().getPrefix() + message);
+            }
+        }
 
         // Update visual displays
         plugin.getDisplayManager().updatePlayerDisplay(player);

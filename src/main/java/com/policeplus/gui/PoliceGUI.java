@@ -1,6 +1,7 @@
 package com.policeplus.gui;
 
 import com.policeplus.PolicePlus;
+import com.policeplus.utils.PermissionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -48,6 +49,7 @@ public class PoliceGUI {
 
         Map<UUID, Integer> wantedPlayers = plugin.getWantedManager().getWantedPlayers();
         Map<UUID, UUID> arrestedPlayers = plugin.getWantedManager().getArrestedPlayers();
+        Map<UUID, Double> allBounties = plugin.getBountyManager().getAllBounties();
         int slot = 0;
 
         for (Map.Entry<UUID, Integer> entry : wantedPlayers.entrySet()) {
@@ -59,12 +61,16 @@ public class PoliceGUI {
                 SkullMeta meta = (SkullMeta) skull.getItemMeta();
 
                 boolean isArrested = arrestedPlayers.containsKey(entry.getKey());
+                double bountyAmount = allBounties.getOrDefault(entry.getKey(), 0.0);
 
                 if (isArrested && plugin.getWantedManager().isArrestedBy(Bukkit.getPlayer(entry.getKey()), player)) {
                     meta.setDisplayName("§6" + playerName + " §7(" + plugin.getLanguageManager().getMessage("status_arrested") + ")");
 
                     List<String> lore = new ArrayList<>();
                     lore.add(plugin.getLanguageManager().getMessage("lore_wanted_level", "level", String.valueOf(entry.getValue())));
+                    if (bountyAmount > 0) {
+                        lore.add(plugin.getLanguageManager().getMessage("lore_bounty_amount", "amount", plugin.getBountyManager().formatCurrency(bountyAmount)));
+                    }
                     String reason = plugin.getWantedManager().getWantedReason(entry.getKey());
                     if (reason != null && !reason.isEmpty()) {
                         lore.add(plugin.getLanguageManager().getMessage("lore_wanted_reason", "reason", reason));
@@ -84,6 +90,9 @@ public class PoliceGUI {
 
                     List<String> lore = new ArrayList<>();
                     lore.add(plugin.getLanguageManager().getMessage("lore_wanted_level", "level", String.valueOf(entry.getValue())));
+                    if (bountyAmount > 0) {
+                        lore.add(plugin.getLanguageManager().getMessage("lore_bounty_amount", "amount", plugin.getBountyManager().formatCurrency(bountyAmount)));
+                    }
                     String reason = plugin.getWantedManager().getWantedReason(entry.getKey());
                     if (reason != null && !reason.isEmpty()) {
                         lore.add(plugin.getLanguageManager().getMessage("lore_wanted_reason", "reason", reason));
@@ -99,6 +108,44 @@ public class PoliceGUI {
                     slot++;
                 }
             }
+        }
+
+        // Add innocent players (wanted level 0) who have active bounties
+        for (Map.Entry<UUID, Double> bountyEntry : allBounties.entrySet()) {
+            if (slot >= 45) break;
+
+            // Skip if already in wanted list (already displayed above)
+            if (wantedPlayers.containsKey(bountyEntry.getKey())) continue;
+
+            double bountyAmount = bountyEntry.getValue();
+            if (bountyAmount <= 0) continue;
+
+            String playerName = Bukkit.getOfflinePlayer(bountyEntry.getKey()).getName();
+            if (playerName == null) continue;
+
+            Player bountyPlayer = Bukkit.getPlayer(bountyEntry.getKey());
+            if (bountyPlayer == null || !bountyPlayer.isOnline()) continue;
+
+            ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
+            SkullMeta meta = (SkullMeta) skull.getItemMeta();
+            meta.setDisplayName("§c" + playerName);
+
+            List<String> lore = new ArrayList<>();
+            lore.add(plugin.getLanguageManager().getMessage("lore_wanted_level", "level", "0"));
+            lore.add(plugin.getLanguageManager().getMessage("lore_bounty_amount", "amount", plugin.getBountyManager().formatCurrency(bountyAmount)));
+            String reason = plugin.getBountyManager().getBountyReason(bountyPlayer);
+            if (reason != null && !reason.isEmpty()) {
+                lore.add(plugin.getLanguageManager().getMessage("lore_wanted_reason", "reason", reason));
+            }
+            lore.add(plugin.getLanguageManager().getMessage("gui_click_to_arrest_or_track"));
+
+            meta.setLore(lore);
+            PersistentDataContainer pdc = meta.getPersistentDataContainer();
+            pdc.set(new NamespacedKey(plugin, "target_uuid"), PersistentDataType.STRING, bountyEntry.getKey().toString());
+            pdc.set(new NamespacedKey(plugin, "state"), PersistentDataType.STRING, "wanted");
+            skull.setItemMeta(meta);
+            gui.setItem(slot, skull);
+            slot++;
         }
 
         ItemStack infoItem = new ItemStack(Material.BOOK);
@@ -156,21 +203,30 @@ public class PoliceGUI {
                 player.closeInventory();
                 return;
             }
-            // Initialize flow state and open Step 1
+            // Initialize flow state and open Type Selection (Step 1)
             JailFlowState state = new JailFlowState();
             state.targetUUID = target.getUniqueId();
             flowStates.put(player.getUniqueId(), state);
-            openDurationGUI(player, plugin);
+            openTypeGUI(player, plugin);
         } else {
-            // Track via compass
+            // Track via compass — split permission: compass item vs BossBar only
+            boolean canUseCompass = PermissionUtils.hasPolicePermission(player, "policeplus.compass");
             if (plugin.getCompassManager().isTracking(player)) {
                 Player current = plugin.getCompassManager().getCompassTarget(player);
                 if (current == null || !current.equals(target)) {
                     plugin.getCompassManager().removeCompass(player);
-                    plugin.getCompassManager().giveCompass(player, target);
+                    if (canUseCompass) {
+                        plugin.getCompassManager().giveCompass(player, target);
+                    } else {
+                        plugin.getCompassManager().startTrackingWithoutCompass(player, target);
+                    }
                 }
             } else {
-                plugin.getCompassManager().giveCompass(player, target);
+                if (canUseCompass) {
+                    plugin.getCompassManager().giveCompass(player, target);
+                } else {
+                    plugin.getCompassManager().startTrackingWithoutCompass(player, target);
+                }
             }
             player.closeInventory();
         }
@@ -205,7 +261,12 @@ public class PoliceGUI {
         }
 
         if (target != null) {
-            plugin.getCompassManager().giveCompass(player, target);
+            boolean canUseCompass = PermissionUtils.hasPolicePermission(player, "policeplus.compass");
+            if (canUseCompass) {
+                plugin.getCompassManager().giveCompass(player, target);
+            } else {
+                plugin.getCompassManager().startTrackingWithoutCompass(player, target);
+            }
             player.closeInventory();
         }
     }
@@ -278,12 +339,12 @@ public class PoliceGUI {
         timeMeta.setDisplayName("§aNormal Jail (Time-based)");
         List<String> timeLore = new ArrayList<>();
         timeLore.add("§7Suspect will serve time in jail");
-        timeLore.add("§7Duration: §e" + flowStates.get(player.getUniqueId()).durationMinutes + " minutes");
+        timeLore.add("§7Click to select duration");
         timeMeta.setLore(timeLore);
         PersistentDataContainer timePdc = timeMeta.getPersistentDataContainer();
         timePdc.set(new NamespacedKey(plugin, PDC_ACTION), PersistentDataType.STRING, "type_TIME");
         timeItem.setItemMeta(timeMeta);
-        gui.setItem(2, timeItem);
+        gui.setItem(3, timeItem);
 
         // Mining-based option
         ItemStack miningItem = new ItemStack(Material.STONE_PICKAXE);
@@ -291,21 +352,12 @@ public class PoliceGUI {
         miningMeta.setDisplayName("§eMining Jail (Labor-based)");
         List<String> miningLore = new ArrayList<>();
         miningLore.add("§7Suspect must mine blocks to earn freedom");
-        miningLore.add("§7Blocks: §e" + flowStates.get(player.getUniqueId()).blockCount);
+        miningLore.add("§7Block count auto-calculated from wanted level");
         miningMeta.setLore(miningLore);
         PersistentDataContainer miningPdc = miningMeta.getPersistentDataContainer();
         miningPdc.set(new NamespacedKey(plugin, PDC_ACTION), PersistentDataType.STRING, "type_BLOCKS");
         miningItem.setItemMeta(miningMeta);
-        gui.setItem(6, miningItem);
-
-        // Back button
-        ItemStack backItem = new ItemStack(Material.ARROW);
-        ItemMeta backMeta = backItem.getItemMeta();
-        backMeta.setDisplayName("§7Back");
-        PersistentDataContainer backPdc = backMeta.getPersistentDataContainer();
-        backPdc.set(new NamespacedKey(plugin, PDC_ACTION), PersistentDataType.STRING, "back_duration");
-        backItem.setItemMeta(backMeta);
-        gui.setItem(0, backItem);
+        gui.setItem(5, miningItem);
 
         // Cancel button
         gui.setItem(8, createCancelItem(plugin));
@@ -330,29 +382,13 @@ public class PoliceGUI {
             plugin.getLogger().info("  Jail: " + entry.getKey() + " | ID: " + entry.getValue().getId() + " | type: " + entry.getValue().getType());
         }
 
-        // Filter jails by type using getType() for robust comparison
-        boolean usingFallback = false;
+        // Strict filtering: only show jails matching the selected type
         List<Map.Entry<String, com.policeplus.managers.JailManager.JailInfo>> filteredJails = new ArrayList<>();
         for (Map.Entry<String, com.policeplus.managers.JailManager.JailInfo> entry : allJails.entrySet()) {
-            String jailType = entry.getValue().getType();
-            if (selectedType.equals(jailType)) {
+            if (selectedType.equals(entry.getValue().getType())) {
                 filteredJails.add(entry);
             }
         }
-
-        plugin.getLogger().info("Filtered jails count: " + filteredJails.size());
-        for (Map.Entry<String, com.policeplus.managers.JailManager.JailInfo> entry : filteredJails) {
-            plugin.getLogger().info("  Filtered Jail: " + entry.getKey() + " | type: " + entry.getValue().getType());
-        }
-
-        // Fallback: if no jails match the selected type, show ALL jails so the menu is never empty
-        if (filteredJails.isEmpty() && !allJails.isEmpty()) {
-            plugin.getLogger().info("[Police-Plus] No jails found for type '" + selectedType + "', falling back to ALL jails.");
-            filteredJails = new ArrayList<>(allJails.entrySet());
-            usingFallback = true;
-        }
-
-        plugin.getLogger().info("=== END JAIL SELECTION GUI DEBUG ===");
 
         // Calculate inventory size: enough rows for jails + 1 row for navigation
         int jailSlots = Math.max(9, filteredJails.size());
@@ -363,15 +399,20 @@ public class PoliceGUI {
         Inventory gui = Bukkit.createInventory(null, size, GUI_JAIL_TITLE);
 
         boolean wantBlocks = selectedType.equals("BLOCKS");
-        
+
         if (filteredJails.isEmpty()) {
-            // Show placeholder when no jails exist at all
+            // Show thematic placeholder — no jails of this type exist
             ItemStack noJails = new ItemStack(Material.RED_STAINED_GLASS_PANE);
             ItemMeta noJailsMeta = noJails.getItemMeta();
-            noJailsMeta.setDisplayName("§cNo Jails Found!");
+            noJailsMeta.setDisplayName("§c§lNo Cells of This Type Available!");
             List<String> noJailsLore = new ArrayList<>();
-            noJailsLore.add("§7Use §e/jail create <name> <id> §7to create a time jail.");
-            noJailsLore.add("§7Use §e/jail createmine <name> <id> §7to create a mining jail.");
+            if (wantBlocks) {
+                noJailsLore.add("§7No mining jails have been created yet.");
+                noJailsLore.add("§7Use §e/jail createmine <name> <id> §7to create one.");
+            } else {
+                noJailsLore.add("§7No time-based jails have been created yet.");
+                noJailsLore.add("§7Use §e/jail create <name> <id> §7to create one.");
+            }
             noJailsMeta.setLore(noJailsLore);
             noJails.setItemMeta(noJailsMeta);
             gui.setItem(13, noJails);
@@ -383,27 +424,16 @@ public class PoliceGUI {
                 String jailName = entry.getKey();
                 com.policeplus.managers.JailManager.JailInfo jail = entry.getValue();
 
-                // Determine display material based on jail's actual type (handles fallback showing mixed types)
-                String jailActualType = jail.getType();
-                boolean jailIsBlocks = "BLOCKS".equals(jailActualType);
-                Material mat = jailIsBlocks ? Material.STONE_PICKAXE : Material.IRON_BARS;
+                Material mat = wantBlocks ? Material.STONE_PICKAXE : Material.IRON_BARS;
                 ItemStack item = new ItemStack(mat);
                 ItemMeta meta = item.getItemMeta();
                 meta.setDisplayName("§b" + jailName);
                 List<String> lore = new ArrayList<>();
                 lore.add("§7ID: §f" + jail.getId());
-                if (usingFallback) {
-                    // Show actual jail type when using fallback so cop can distinguish
-                    if (jailIsBlocks) {
-                        lore.add("§7Type: §eMining (BLOCKS)");
-                    } else {
-                        lore.add("§7Type: §eTime");
-                    }
-                }
-                if (wantBlocks && !usingFallback) {
+                if (wantBlocks) {
                     lore.add("§7Type: §eMining");
                     lore.add("§7Blocks: §e" + state.blockCount);
-                } else if (!usingFallback) {
+                } else {
                     lore.add("§7Type: §eTime");
                     lore.add("§7Duration: §e" + state.durationMinutes + " min");
                 }
@@ -470,7 +500,23 @@ public class PoliceGUI {
             return true;
         }
 
-        // Duration selection
+        // Type selection (Step 1 — now the FIRST step)
+        if (action.startsWith("type_")) {
+            state.jailType = action.replace("type_", "");
+            if (state.jailType.equals("BLOCKS")) {
+                // BLOCKS: calculate blocks needed and skip duration, go directly to Jail Selection
+                int wantedLevel = plugin.getWantedManager().getWantedLevel(Bukkit.getPlayer(state.targetUUID));
+                if (wantedLevel <= 0) wantedLevel = 1;
+                state.blockCount = wantedLevel * plugin.getConfigManager().getBlocksPerWanted();
+                openJailSelectionGUI(player, plugin);
+            } else {
+                // TIME: open Duration Selection next
+                openDurationGUI(player, plugin);
+            }
+            return true;
+        }
+
+        // Duration selection (Step 2 — only for TIME jails)
         if (action.startsWith("duration_")) {
             if (action.equals("duration_custom")) {
                 // Mark as custom input pending, close GUI, wait for chat
@@ -482,19 +528,7 @@ public class PoliceGUI {
             }
             int minutes = Integer.parseInt(action.replace("duration_", ""));
             state.durationMinutes = minutes;
-            // Calculate block count based on wanted level and config
-            int wantedLevel = plugin.getWantedManager().getWantedLevel(Bukkit.getPlayer(state.targetUUID));
-            if (wantedLevel <= 0) wantedLevel = 1;
-            state.blockCount = wantedLevel * plugin.getConfigManager().getBlocksPerWanted();
-            // Move to Step 2
-            openTypeGUI(player, plugin);
-            return true;
-        }
-
-        // Type selection
-        if (action.startsWith("type_")) {
-            state.jailType = action.replace("type_", "");
-            // Move to Step 3
+            // Move to Jail Selection
             openJailSelectionGUI(player, plugin);
             return true;
         }
@@ -546,12 +580,8 @@ public class PoliceGUI {
             }
             state.durationMinutes = minutes;
             state.customInputPending = false;
-            // Calculate block count
-            int wantedLevel = plugin.getWantedManager().getWantedLevel(Bukkit.getPlayer(state.targetUUID));
-            if (wantedLevel <= 0) wantedLevel = 1;
-            state.blockCount = wantedLevel * plugin.getConfigManager().getBlocksPerWanted();
-            // Move to Step 2
-            openTypeGUI(player, plugin);
+            // Move to Jail Selection (type already selected as TIME)
+            openJailSelectionGUI(player, plugin);
         } catch (NumberFormatException e) {
             player.sendMessage(plugin.getLanguageManager().getPrefix() + plugin.getLanguageManager().getMessage("jail_custom_duration_invalid"));
         }

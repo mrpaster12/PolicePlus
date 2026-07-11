@@ -32,6 +32,35 @@ public class PlayerListener implements Listener {
             plugin.getWantedManager().onPlayerKill(killer, victim);
         }
 
+        // Bounty Hunter Payout: anyone who kills a player with an active bounty gets paid
+        if (killer != null && killer != victim && plugin.getBountyManager().hasBounty(victim)) {
+            double bountyAmount = plugin.getBountyManager().getBounty(victim);
+            if (bountyAmount > 0) {
+                try {
+                    net.milkbowl.vault.economy.Economy economy = com.policeplus.PolicePlus.getEconomy();
+                    if (economy != null) {
+                        economy.depositPlayer(killer, bountyAmount);
+
+                        // Private message to the killer only
+                        killer.sendMessage(plugin.getLanguageManager().getPrefix() +
+                                plugin.getLanguageManager().getMessage("bounty_claimed_killer",
+                                        "player", victim.getName(),
+                                        "amount", plugin.getBountyManager().formatCurrency(bountyAmount)));
+
+                        // Private message to the victim only
+                        victim.sendMessage(plugin.getLanguageManager().getPrefix() +
+                                plugin.getLanguageManager().getMessage("bounty_claimed_victim",
+                                        "player", killer.getName(),
+                                        "amount", plugin.getBountyManager().formatCurrency(bountyAmount)));
+                    }
+                } catch (Throwable t) {
+                    plugin.getLogger().warning("Could not process bounty hunter payout: " + t.getMessage());
+                }
+                // Silently remove bounty — no broadcast
+                plugin.getBountyManager().removeBountySilently(victim);
+            }
+        }
+
         // Reset victim's wanted on death based on config
         if (plugin.getConfigManager().isResetWantedOnDeathEnabled() && plugin.getWantedManager().isWanted(victim)) {
             int threshold = plugin.getConfigManager().getMaxWantedLevelToResetOnDeath();
@@ -208,8 +237,8 @@ public class PlayerListener implements Listener {
         if (item == null || item.getType() == org.bukkit.Material.AIR) return;
         if (!plugin.getHandcuffManager().isHandcuffItem(item)) return;
 
-        // Permission check: police rank or cuffe.use
-        if (!police.hasPermission("policeplus.cuffe.use") && !com.policeplus.PolicePlus.isCop(police)) {
+        // Permission check: unified permission system
+        if (!com.policeplus.utils.PermissionUtils.hasPolicePermission(police, "policeplus.handcuff.cuff")) {
             police.sendMessage(plugin.getLanguageManager().getPrefix() + plugin.getLanguageManager().getMessage("no_permission"));
             return;
         }

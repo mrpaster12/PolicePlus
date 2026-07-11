@@ -2,6 +2,7 @@ package com.policeplus.commands;
 
 import com.policeplus.PolicePlus;
 import com.policeplus.managers.HandcuffManager;
+import com.policeplus.utils.PermissionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -43,7 +44,7 @@ public class HandcuffCommand implements CommandExecutor {
     }
 
     private boolean cuffCmd(Player p, String[] args) {
-        if (!p.hasPermission("policeplus.handcuff.cuff")) {
+        if (!PermissionUtils.hasPolicePermission(p, "policeplus.handcuff.cuff")) {
             p.sendMessage(plugin.getLanguageManager().getMessage("no_permission"));
             return true;
         }
@@ -77,7 +78,7 @@ public class HandcuffCommand implements CommandExecutor {
     }
 
     private boolean uncuffCmd(Player p, String[] args) {
-        if (!p.hasPermission("policeplus.handcuff.uncuff")) {
+        if (!PermissionUtils.hasPolicePermission(p, "policeplus.handcuff.uncuff")) {
             p.sendMessage(plugin.getLanguageManager().getMessage("no_permission"));
             return true;
         }
@@ -104,7 +105,7 @@ public class HandcuffCommand implements CommandExecutor {
     }
 
     private boolean give(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("policeplus.handcuff.give")) {
+        if (sender instanceof Player && !PermissionUtils.hasPolicePermission((Player) sender, "policeplus.handcuff.give")) {
             sender.sendMessage(plugin.getLanguageManager().getMessage("no_permission"));
             return true;
         }

@@ -78,7 +78,7 @@ public class HandcuffListener implements Listener {
         // even holding a handcuff item. Now we only reach the debounce check
         // once we know this is actually a handcuff-use attempt.
         if (it == null || !manager.isHandcuffItem(it)) return;
-        if (!p.hasPermission("policeplus.handcuff.cuff") && !com.policeplus.PolicePlus.isCop(p)) return;
+        if (!com.policeplus.utils.PermissionUtils.hasPolicePermission(p, "policeplus.handcuff.cuff")) return;
 
         // --- Debounce Shield: block duplicate handcuff-use events within 500ms ---
         if (isOnCooldown(p.getUniqueId())) {

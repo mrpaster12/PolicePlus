@@ -1,6 +1,7 @@
 package com.policeplus.commands;
 
 import com.policeplus.PolicePlus;
+import com.policeplus.utils.PermissionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,9 +18,9 @@ public class UnjailCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Permission check — must be a cop (policeplus.police, policeplus.admin, or op)
+        // Permission check — must have policeplus.jail.unjail or master cop permission
         // Console senders are allowed (they bypass permission checks)
-        if (sender instanceof Player && !PolicePlus.isCop((Player) sender)) {
+        if (sender instanceof Player && !PermissionUtils.hasPolicePermission((Player) sender, "policeplus.jail.unjail")) {
             sender.sendMessage(plugin.getLanguageManager().getPrefix() +
                     plugin.getLanguageManager().getMessage("no_permission"));
             return true;

@@ -1,6 +1,7 @@
 package com.policeplus.commands;
 
 import com.policeplus.PolicePlus;
+import com.policeplus.utils.PermissionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,19 +18,19 @@ public class CompassCommand implements CommandExecutor {
     
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("policeplus.compass")) {
-            sender.sendMessage(plugin.getLanguageManager().getPrefix() + 
-                plugin.getLanguageManager().getMessage("no_permission"));
-            return true;
-        }
-        
         if (!(sender instanceof Player)) {
             sender.sendMessage(plugin.getLanguageManager().getPrefix() + 
-                "§cThis command can only be used by players!");
+                plugin.getLanguageManager().getMessage("usage_wanted_player_only"));
             return true;
         }
         
         Player player = (Player) sender;
+        
+        if (!PermissionUtils.hasPolicePermission(player, "policeplus.compass")) {
+            sender.sendMessage(plugin.getLanguageManager().getPrefix() + 
+                plugin.getLanguageManager().getMessage("no_permission"));
+            return true;
+        }
         
         if (args.length == 0) {
             sender.sendMessage(plugin.getLanguageManager().getPrefix() + 

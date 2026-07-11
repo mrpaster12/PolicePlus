@@ -3,6 +3,7 @@ package com.policeplus.commands;
 import com.policeplus.PolicePlus;
 import com.policeplus.gui.PoliceGUI;
 import com.policeplus.managers.JailManager;
+import com.policeplus.utils.PermissionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -123,6 +124,23 @@ public class PoliceCommand implements CommandExecutor {
                 }
             } catch (Throwable t) {
                 plugin.getLogger().warning("Could not pay economy reward: " + t.getMessage());
+            }
+
+            // Bounty payout: if jailed player has an active bounty and remove_on_jail is true
+            try {
+                if (plugin.getConfigManager().isBountyRemoveOnJail() && plugin.getBountyManager().hasBounty(target)) {
+                    double bountyAmount = plugin.getBountyManager().getBounty(target);
+                    if (bountyAmount > 0 && PolicePlus.getEconomy() != null) {
+                        PolicePlus.getEconomy().depositPlayer(police, bountyAmount);
+                        police.sendMessage(plugin.getLanguageManager().getPrefix() +
+                                plugin.getLanguageManager().getMessage("bounty_claimed",
+                                        "amount", plugin.getBountyManager().formatCurrency(bountyAmount),
+                                        "player", target.getName()));
+                    }
+                    plugin.getBountyManager().removeBounty(target);
+                }
+            } catch (Throwable t) {
+                plugin.getLogger().warning("Could not process bounty payout: " + t.getMessage());
             }
 
             sender.sendMessage(plugin.getLanguageManager().getPrefix() + 
@@ -381,6 +399,23 @@ public class PoliceCommand implements CommandExecutor {
         } catch (Throwable t) {
             plugin.getLogger().warning("Could not pay economy reward: " + t.getMessage());
         }
+
+        // Bounty payout: if jailed player has an active bounty and remove_on_jail is true
+        try {
+            if (plugin.getConfigManager().isBountyRemoveOnJail() && plugin.getBountyManager().hasBounty(target)) {
+                double bountyAmount = plugin.getBountyManager().getBounty(target);
+                if (bountyAmount > 0 && PolicePlus.getEconomy() != null) {
+                    PolicePlus.getEconomy().depositPlayer(police, bountyAmount);
+                    police.sendMessage(plugin.getLanguageManager().getPrefix() +
+                            plugin.getLanguageManager().getMessage("bounty_claimed",
+                                    "amount", plugin.getBountyManager().formatCurrency(bountyAmount),
+                                    "player", target.getName()));
+                }
+                plugin.getBountyManager().removeBounty(target);
+            }
+        } catch (Throwable t) {
+            plugin.getLogger().warning("Could not process bounty payout: " + t.getMessage());
+        }
         
         sender.sendMessage(plugin.getLanguageManager().getPrefix() + 
             plugin.getLanguageManager().getMessage("player_jailed"));
@@ -581,7 +616,7 @@ public class PoliceCommand implements CommandExecutor {
         sender.sendMessage("");
 
         // Police GUI
-        if (sender instanceof Player && PolicePlus.isCop((Player) sender)) {
+        if (sender instanceof Player && PermissionUtils.hasPolicePermission((Player) sender, "policeplus.gui")) {
             sendClickable(sender,
                     "§b/police §7- " + plugin.getLanguageManager().getMessage("help_desc_gui"),
                     "/police", "§eClick to open Police GUI");

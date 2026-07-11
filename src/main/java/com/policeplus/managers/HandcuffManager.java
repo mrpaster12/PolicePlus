@@ -37,6 +37,7 @@ public class HandcuffManager {
     private String handcuffLore;
     private String handcuffNameColor;
     private boolean handcuffNameBold;
+    private String handcuffLoreColor;
     private int maxCuffSeconds;
     private final NamespacedKey cuffKey;
     private boolean acceptPlainItem;
@@ -83,15 +84,9 @@ public class HandcuffManager {
     }
 
     public void loadConfig() {
-        ConfigurationSection sec = plugin.getConfig().getConfigurationSection("handcuff");
-        if (sec == null) {
-            plugin.getConfig().set("handcuff.name", "cuff");
-            plugin.getConfig().set("handcuff.lore", "cuff");
-            plugin.getConfig().set("handcuff.name_color", "&a");
-            plugin.getConfig().set("handcuff.name_bold", true);
-            plugin.getConfig().set("handcuff.max_time", 300);
-            plugin.saveConfig();
-        }
+        // No need to save config.yml here — ConfigManager.fillMissingKeys() handles
+        // inserting missing defaults without stripping comments.
+        // plugin.saveConfig() was removed to prevent stripping bilingual comments.
         // Lock material to BLAZE_ROD regardless of config
         this.handcuffItem = Material.BLAZE_ROD;
         // Use ConfigManager cached values where possible
@@ -99,6 +94,7 @@ public class HandcuffManager {
         this.handcuffLore = plugin.getConfigManager().getHandcuffLore();
         this.handcuffNameColor = plugin.getConfigManager().getHandcuffNameColor();
         this.handcuffNameBold = plugin.getConfigManager().isHandcuffNameBold();
+        this.handcuffLoreColor = plugin.getConfigManager().getHandcuffLoreColor();
         this.maxCuffSeconds = plugin.getConfigManager().getHandcuffMaxTime();
         this.acceptPlainItem = plugin.getConfigManager().isHandcuffAcceptPlainItem();
     }
@@ -370,7 +366,8 @@ public class HandcuffManager {
                     + handcuffName);
             meta.setDisplayName(name);
             if (handcuffLore != null && !handcuffLore.isEmpty()) {
-                meta.setLore(Collections.singletonList(colorize(handcuffLore)));
+                meta.setLore(Collections.singletonList(colorize(
+                        (handcuffLoreColor != null ? handcuffLoreColor : "&7") + handcuffLore)));
             }
             meta.getPersistentDataContainer().set(cuffKey, PersistentDataType.BYTE, (byte) 1);
             item.setItemMeta(meta);

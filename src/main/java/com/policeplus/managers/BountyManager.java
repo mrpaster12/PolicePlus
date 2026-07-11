@@ -74,6 +74,19 @@ public class BountyManager {
         }
     }
 
+    /**
+     * Silently removes a bounty from a player without broadcasting.
+     * Used when a bounty is claimed via kill to avoid redundant broadcast messages.
+     */
+    public void removeBountySilently(Player target) {
+        UUID targetUUID = target.getUniqueId();
+        if (bounties.remove(targetUUID) != null) {
+            bountyReasons.remove(targetUUID);
+            bountyIssuers.remove(targetUUID);
+            markDirtyAndScheduleSave();
+        }
+    }
+
     public double getBounty(Player player) {
         return bounties.getOrDefault(player.getUniqueId(), 0.0);
     }
@@ -109,6 +122,53 @@ public class BountyManager {
 
     public String formatCurrency(double amount) {
         return String.format("%.2f", amount);
+    }
+
+    /**
+     * Add a bounty amount to a player's head by UUID.
+     * If the player already has a bounty, the amount is added to the existing bounty.
+     */
+    public void addBounty(UUID targetUUID, double amount) {
+        double current = bounties.getOrDefault(targetUUID, 0.0);
+        bounties.put(targetUUID, current + amount);
+        markDirtyAndScheduleSave();
+    }
+
+    /**
+     * Remove a bounty by player UUID.
+     */
+    public void removeBounty(UUID targetUUID) {
+        if (bounties.remove(targetUUID) != null) {
+            bountyReasons.remove(targetUUID);
+            bountyIssuers.remove(targetUUID);
+            markDirtyAndScheduleSave();
+        }
+    }
+
+    /**
+     * Returns a formatted list of all active bounties for display.
+     */
+    public List<String> getFormattedBountyList() {
+        List<String> list = new ArrayList<>();
+        for (Map.Entry<UUID, Double> entry : bounties.entrySet()) {
+            Player player = Bukkit.getPlayer(entry.getKey());
+            if (player != null && player.isOnline()) {
+                String reason = bountyReasons.getOrDefault(entry.getKey(), "");
+                String issuerName = "Unknown";
+                UUID issuerUUID = bountyIssuers.get(entry.getKey());
+                if (issuerUUID != null) {
+                    Player issuer = Bukkit.getPlayer(issuerUUID);
+                    if (issuer != null) issuerName = issuer.getName();
+                }
+                String line = "§c" + player.getName() + " §7- §e$" + formatCurrency(entry.getValue());
+                if (reason != null && !reason.isEmpty()) {
+                    line += " §7| §f" + reason;
+                }
+                line += " §7| by §6" + issuerName;
+                list.add(line);
+            }
+        }
+        return list;
     }
 
     private void loadData() {

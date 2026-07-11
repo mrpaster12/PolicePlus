@@ -2,6 +2,7 @@ package com.policeplus.listeners;
 
 import com.policeplus.PolicePlus;
 import com.policeplus.gui.PoliceGUI;
+import com.policeplus.utils.PermissionUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -70,6 +71,15 @@ public class CompassListener implements Listener {
         ItemStack item = event.getItem();
         
         if (item != null && item.getType() == Material.COMPASS) {
+            // Protect compass interact: must have policeplus.compass permission
+            if (!PermissionUtils.hasPolicePermission(player, "policeplus.compass")) {
+                event.setCancelled(true);
+                player.getInventory().remove(item);
+                player.sendMessage(plugin.getLanguageManager().getPrefix() +
+                        plugin.getLanguageManager().getMessage("no_permission"));
+                return;
+            }
+            
             Player target = plugin.getCompassManager().getCompassTarget(player);
             
             if (target != null) {

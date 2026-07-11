@@ -1,6 +1,7 @@
 package com.policeplus.commands;
 
 import com.policeplus.PolicePlus;
+import com.policeplus.utils.PermissionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -192,7 +193,7 @@ public class PoliceTabCompleter implements TabCompleter {
         if (args.length == 1) {
             List<String> completions = new ArrayList<>();
             completions.add("wanted");
-            if (sender instanceof org.bukkit.entity.Player && com.policeplus.PolicePlus.isCop((org.bukkit.entity.Player) sender)) {
+            if (sender instanceof org.bukkit.entity.Player && PermissionUtils.hasPolicePermission((org.bukkit.entity.Player) sender, "policeplus.gui")) {
                 completions.add("jail");
                 completions.add("job");
                 completions.add("help");
@@ -282,8 +283,8 @@ public class PoliceTabCompleter implements TabCompleter {
     // ========================= /cuffe =========================
 
     private List<String> completeCuffCommand(CommandSender sender, String[] args) {
-        boolean canUse = sender.hasPermission("policeplus.cuffe.use") || (sender instanceof Player && com.policeplus.PolicePlus.isCop((Player) sender));
-        boolean canGive = sender.hasPermission("policeplus.cuffe.give");
+        boolean canUse = sender instanceof Player && PermissionUtils.hasPolicePermission((Player) sender, "policeplus.handcuff.cuff");
+        boolean canGive = sender instanceof Player && PermissionUtils.hasPolicePermission((Player) sender, "policeplus.handcuff.give");
 
         if (args.length == 1) {
             List<String> list = new ArrayList<>();
@@ -304,7 +305,7 @@ public class PoliceTabCompleter implements TabCompleter {
     // ========================= /uncuffe =========================
 
     private List<String> completeUncuffCommand(CommandSender sender, String[] args) {
-        boolean canUse = sender.hasPermission("policeplus.cuffe.use") || (sender instanceof Player && com.policeplus.PolicePlus.isCop((Player) sender));
+        boolean canUse = sender instanceof Player && PermissionUtils.hasPolicePermission((Player) sender, "policeplus.handcuff.uncuff");
 
         if (args.length == 1 && canUse) {
             return filterStartsWith(getOnlinePlayerNames(), args[0]);
@@ -351,15 +352,18 @@ public class PoliceTabCompleter implements TabCompleter {
 
     private List<String> completeBountyCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            List<String> completions = Arrays.asList("set", "add", "remove", "list", "info");
+            List<String> completions = new ArrayList<>(Arrays.asList("set", "add", "remove", "delete", "list", "info", "help"));
             return filterStartsWith(completions, args[0]);
         }
 
         if (args.length == 2) {
             switch (args[0].toLowerCase()) {
+                case "remove":
+                case "delete":
+                    // Suggest only players who have active bounties
+                    return filterStartsWith(getBountyHolderNames(), args[1]);
                 case "set":
                 case "add":
-                case "remove":
                 case "info":
                     return filterStartsWith(getOnlinePlayerNames(), args[1]);
                 default:
@@ -480,6 +484,17 @@ public class PoliceTabCompleter implements TabCompleter {
         for (Map.Entry<String, JailManager.JailInfo> entry : plugin.getJailManager().getAllJails().entrySet()) {
             if (entry.getValue().isMine()) {
                 names.add(entry.getKey());
+            }
+        }
+        return names;
+    }
+
+    private List<String> getBountyHolderNames() {
+        List<String> names = new ArrayList<>();
+        for (java.util.UUID uuid : plugin.getBountyManager().getAllBounties().keySet()) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null && player.isOnline()) {
+                names.add(player.getName());
             }
         }
         return names;
